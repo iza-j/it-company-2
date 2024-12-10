@@ -1,5 +1,7 @@
 package com.solvd.itcompany2.outsideentities;
 
+import static com.solvd.itcompany2.helpers.GlobalVariable.LOGGER;
+
 public class InternetServiceProvider extends Provider {
 
     private String country;
@@ -12,7 +14,7 @@ public class InternetServiceProvider extends Provider {
 
     @Override
     public void phoneCall() {
-        System.out.println("Calling...\n.\n.\n.\nPlease call later. " + this.name + "'s customer service team waits to help you on second mondays of every third month, from 1pm til 2pm.\n");
+        LOGGER.info("Calling...\n.\n.\n.\nPlease call later. " + this.name + "'s customer service team waits to help you on second mondays of every third month, from 1pm til 2pm.\n");
     }
 
     public String getCountry() {

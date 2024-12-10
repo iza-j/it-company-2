@@ -1,9 +1,11 @@
 package com.solvd.itcompany2.projectresources;
 
 import com.solvd.itcompany2.corporatestructure.Employee;
-import static com.solvd.itcompany2.helpers.GlobalVariable.*;
 
 import java.util.Objects;
+
+import static com.solvd.itcompany2.helpers.GlobalVariable.MULTIPLICAND;
+import static com.solvd.itcompany2.helpers.GlobalVariable.MULTIPLIER;
 
 public class TimeTracker {
 

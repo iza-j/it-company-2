@@ -1,16 +1,17 @@
 package com.solvd.itcompany2.corporatestructure;
 
 import java.util.HashSet;
+import java.util.Set;
 
 public class ITCompany implements CorporateUnit {
 
     private String name;
     private Employee ceo;
-    private HashSet<Department> departments;
+    private Set<Department> departments;
 
     @Override
-    public HashSet<Employee> getAllEmployees() {
-        HashSet<Employee> companyEmployees = new HashSet<>();
+    public Set<Employee> getAllEmployees() {
+        Set<Employee> companyEmployees = new HashSet<>();
 
         if (this.getCeo() != null) { // if a ceo exists
             companyEmployees.add(this.getCeo());
@@ -34,11 +35,11 @@ public class ITCompany implements CorporateUnit {
         this.name = name;
     }
 
-    public HashSet<Department> getDepartments() {
+    public Set<Department> getDepartments() {
         return departments;
     }
 
-    public void setDepartments(HashSet<Department> departments) {
+    public void setDepartments(Set<Department> departments) {
         this.departments = departments;
     }
 

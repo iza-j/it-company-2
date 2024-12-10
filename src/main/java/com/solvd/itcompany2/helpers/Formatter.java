@@ -4,9 +4,11 @@ public abstract class Formatter {
 
     public static final String reset =      "0";
     public static final String bold =       "1";
+
     public static final String blackFG =    "30";
     public static final String yellowFG =   "33";
     public static final String cyanFG =     "36";
+
     public static final String blackBG =    "40";
     public static final String purpleBG =   "45";
 
@@ -42,6 +44,7 @@ public abstract class Formatter {
 
     public static String formatHeader(String text) {
         return new StringBuilder()
+                .append("\n")
                 .append(ansiColor(blackFG, purpleBG, bold))
                 .append(" --- ")
                 .append(text)

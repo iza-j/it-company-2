@@ -1,8 +1,10 @@
 package com.solvd.itcompany2.outsideentities;
 
-import com.solvd.itcompany2.exceptions.*;
+import com.solvd.itcompany2.exceptions.NegativeNumberException;
+import com.solvd.itcompany2.exceptions.NumberEqualToZeroException;
 
 import static com.solvd.itcompany2.helpers.Formatter.*;
+import static com.solvd.itcompany2.helpers.GlobalVariable.LOGGER;
 
 public abstract class Provider implements PayableEntity { // an abstract class cannot be instantiated on its own
 
@@ -26,7 +28,7 @@ public abstract class Provider implements PayableEntity { // an abstract class c
             throw new NegativeNumberException(exceptionMessage);
 
         } else {
-            System.out.println(new StringBuilder()
+            LOGGER.info(new StringBuilder()
                     .append(ansiColor(yellowFG, blackBG))
                     .append(" *ka-ching!* ")
                     .append(ansiColor(reset))

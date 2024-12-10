@@ -2,25 +2,27 @@ package com.solvd.itcompany2.techstack;
 
 import com.solvd.itcompany2.corporatestructure.Employee;
 
-import java.util.HashSet;
+import java.util.Set;
+
+import static com.solvd.itcompany2.helpers.GlobalVariable.LOGGER;
 
 public class Skill {
 
     private String name;
-    private HashSet<Employee> employees;
+    private Set<Employee> employees;
 
-    public Skill(String name, HashSet<Employee> employees) {
+    public Skill(String name, Set<Employee> employees) {
         this.name = name;
         this.employees = employees;
     }
 
     public void printAccess(Tool tool) {
-        System.out.print(new StringBuilder()
+        LOGGER.info(new StringBuilder()
                 .append("Employees skilled at ")
                 .append(this.name)
                 .append(", but without access to ")
                 .append(tool.getName())
-                .append(":\n"));
+                .append(":"));
 
         for (Employee employee : this.getEmployees()) {
             boolean access = false;
@@ -31,7 +33,7 @@ public class Skill {
                 }
             }
             if (!access) {
-                System.out.println(employee.getName());
+                LOGGER.info(employee.getName());
             }
         }
     }
@@ -44,11 +46,11 @@ public class Skill {
         this.name = name;
     }
 
-    public HashSet<Employee> getEmployees() {
+    public Set<Employee> getEmployees() {
         return employees;
     }
 
-    public void setEmployees(HashSet<Employee> employees) {
+    public void setEmployees(Set<Employee> employees) {
         this.employees = employees;
     }
 }

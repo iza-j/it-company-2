@@ -2,13 +2,15 @@ package com.solvd.itcompany2.outsideentities;
 
 import com.solvd.itcompany2.techstack.Tool;
 
-import java.util.HashSet;
+import java.util.Set;
+
+import static com.solvd.itcompany2.helpers.GlobalVariable.LOGGER;
 
 public class SoftwareVendor extends Provider {
 
-    private HashSet<Tool> tools;
+    private Set<Tool> tools;
 
-    public SoftwareVendor(String name, String phoneNumber, HashSet<Tool> tools) {
+    public SoftwareVendor(String name, String phoneNumber, Set<Tool> tools) {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.tools = tools;
@@ -16,14 +18,14 @@ public class SoftwareVendor extends Provider {
 
     @Override
     public void phoneCall() {
-        System.out.println("Calling...\n.\n.\n.\n" + this.name + "'s customer service is temporarily unavailable. Please message us on BoopLoop.\n");
+        LOGGER.info("Calling...\n.\n.\n.\n" + this.name + "'s customer service is temporarily unavailable. Please message us on BoopLoop.\n");
     }
 
-    public HashSet<Tool> getTools() {
+    public Set<Tool> getTools() {
         return tools;
     }
 
-    public void setTools(HashSet<Tool> tools) {
+    public void setTools(Set<Tool> tools) {
         this.tools = tools;
     }
 }

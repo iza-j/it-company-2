@@ -1,10 +1,10 @@
 package com.solvd.itcompany2.corporatestructure;
 
-import java.util.HashSet;
+import java.util.Set;
 
 public interface CorporateUnit {
 
-    HashSet<Employee> getAllEmployees();
+    Set<Employee> getAllEmployees();
 
     String getName();
 }

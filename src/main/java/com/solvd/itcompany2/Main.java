@@ -2,20 +2,31 @@ package com.solvd.itcompany2;
 
 import com.solvd.itcompany2.corporatestructure.*;
 import com.solvd.itcompany2.exceptions.*;
-import com.solvd.itcompany2.outsideentities.*;
-import com.solvd.itcompany2.projectresources.*;
-import com.solvd.itcompany2.techstack.*;
-import static com.solvd.itcompany2.helpers.Formatter.*;
+import com.solvd.itcompany2.outsideentities.Client;
+import com.solvd.itcompany2.outsideentities.InternetServiceProvider;
+import com.solvd.itcompany2.outsideentities.Provider;
+import com.solvd.itcompany2.outsideentities.SoftwareVendor;
+import com.solvd.itcompany2.projectresources.Project;
+import com.solvd.itcompany2.projectresources.Stakeholder;
+import com.solvd.itcompany2.projectresources.Task;
+import com.solvd.itcompany2.projectresources.TimeTracker;
+import com.solvd.itcompany2.techstack.Skill;
+import com.solvd.itcompany2.techstack.Tool;
 
 import java.io.FileOutputStream;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
+
+import static com.solvd.itcompany2.helpers.Formatter.formatHeader;
+import static com.solvd.itcompany2.helpers.GlobalVariable.LOGGER;
 
 public class Main {
 
     public static void main(String[] args) {
         // Homework #2
-        System.out.println("\n" + formatHeader("Homework #2"));
+        LOGGER.info(formatHeader("Homework #2"));
 
         // create employees
         Employee employee1 = new Employee(1, "Karol Zakrętka", "Antarctica/Troll", "2002-01-09", 714.0);
@@ -32,14 +43,14 @@ public class Main {
 
         // print some of employees' data
         employee1.printTimeZone();
-        System.out.println();
+        LOGGER.info("");
         try {
             testAutomation.printEmployeesDescription();
         } catch (EmptyListException e) {
-            System.out.println(e);
+            LOGGER.error(e);
         }
         employee2.printWorkYears();
-        System.out.println();
+        LOGGER.info("");
 
         //create departments
         Department qaAndTesting = new Department("Quality Assurance and Testing", employee2, new HashSet<> (Arrays.asList(testAutomation, qualityAssurance)));
@@ -65,56 +76,55 @@ public class Main {
         izaBoopLoop.logHours(39);
         izaBoopLoop.logHours(99);
         jakubBoopLoop.logHours(15);
-        System.out.println(boopLoop.getPersonHours());
-        System.out.println(izaBoopLoop.getPersonHours());
-        System.out.println(jakubBoopLoop.getPersonHours() + "\n");
+        LOGGER.info(boopLoop.getPersonHours());
+        LOGGER.info(izaBoopLoop.getPersonHours());
+        LOGGER.info(jakubBoopLoop.getPersonHours() + "\n");
 
         // count project earnings
-        System.out.println(boopLoop.getEarnings() + "\n");
+        LOGGER.info(boopLoop.getEarnings() + "\n");
 
         // create a tool
-        HashSet<Employee> intellijEmployees = new HashSet<> (Arrays.asList(employee3, employee1));
+        Set<Employee> intellijEmployees = new HashSet<> (Arrays.asList(employee3, employee1));
         Tool intellij = new Tool("IntelliJ IDEA Ultimate (Enterprise Edition)", intellijEmployees);
 
         // check an employee's access to a tool
-        System.out.println(intellij.checkAccess(employee3));
-        System.out.println(intellij.checkAccess(employee1) + "\n");
+        LOGGER.info(intellij.checkAccess(employee3));
+        LOGGER.info(intellij.checkAccess(employee1) + "\n");
 
         // create a skill
-        HashSet<Employee> programmingJavaEmployees = new HashSet<> (Arrays.asList(employee1, employee3, employee4, employee5));
+        Set<Employee> programmingJavaEmployees = new HashSet<> (Arrays.asList(employee1, employee3, employee4, employee5));
         Skill programmingJava = new Skill("Programming in Java", programmingJavaEmployees);
 
         // check skilled employees' access to a tool
         programmingJava.printAccess(intellij);
-        System.out.println();
 
         // Homework #3
-        System.out.println("\n" + formatHeader("Homework #3"));
+        LOGGER.info(formatHeader("Homework #3"));
 
         // print employees' hash codes
-        ArrayList<Employee> employeeList = new ArrayList<> (Arrays.asList(employee1, employee2, employee3, employee4, employee5, employee6));
+        List<Employee> employeeList = new ArrayList<> (Arrays.asList(employee1, employee2, employee3, employee4, employee5, employee6));
         for (Employee employee : employeeList) {
-            System.out.println(employee.hashCode());
+            LOGGER.info(employee.hashCode());
         }
-        System.out.println();
+        LOGGER.info("");
 
         // print toString's output for all employees
         for (Employee employee : employeeList) {
-            System.out.println(employee.toString());
+            LOGGER.info(employee.toString());
         }
-        System.out.println();
+        LOGGER.info("");
 
         // compare all employees to employee6
         for (Employee employee : employeeList) {
-            System.out.println(employee.equals(employee6));
+            LOGGER.info(employee.equals(employee6));
         }
-        System.out.println();
+        LOGGER.info("");
 
         // you can find comments about overriding in the Employee class
 
         // create service providers and call them
         Provider inea = new InternetServiceProvider("Inea", "112", "Poland");
-        HashSet<Tool> jetBrainsTools = new HashSet<> (Arrays.asList(intellij));
+        Set<Tool> jetBrainsTools = new HashSet<> (Arrays.asList(intellij));
         Provider jetBrains = new SoftwareVendor("JetBrains", "987123654", jetBrainsTools);
         inea.phoneCall();
         jetBrains.phoneCall();
@@ -125,60 +135,60 @@ public class Main {
         dei.printDescription();
         christmasParty.printDescription();
         testAutomation.printDescription();
-        System.out.println();
+        LOGGER.info("");
 
         // check whether an employee belongs to different CorporateUnits
         for (CorporateUnit corporateUnit : new ArrayList<> (Arrays.asList(testAutomation, qaAndTesting, resolvd, dei))) {
-            System.out.println(new StringBuilder()
+            LOGGER.info(new StringBuilder()
                     .append(corporateUnit.getName())
                     .append(": ")
                     .append(employee2.checkAffiliation(corporateUnit)));
         }
 
         // Homework #4
-        System.out.println("\n" + formatHeader("Homework #4"));
+        LOGGER.info(formatHeader("Homework #4"));
 
         // use overridden TimeTracker's methods
-        System.out.println(izaBoopLoop);
-        System.out.println(izaBoopLoop.equals(jakubBoopLoop));
-        System.out.println(izaBoopLoop.hashCode() + ", " + jakubBoopLoop.hashCode() + "\n");
+        LOGGER.info(izaBoopLoop);
+        LOGGER.info(izaBoopLoop.equals(jakubBoopLoop));
+        LOGGER.info(izaBoopLoop.hashCode() + ", " + jakubBoopLoop.hashCode() + "\n");
 
         // use overridden Team's methods
-        System.out.println(testAutomation);
-        System.out.println(testAutomation.equals(dei));
-        System.out.println(testAutomation.hashCode() + ", " + dei.hashCode());
-        System.out.println();
+        LOGGER.info(testAutomation);
+        LOGGER.info(testAutomation.equals(dei));
+        LOGGER.info(testAutomation.hashCode() + ", " + dei.hashCode());
+        LOGGER.info("");
 
         // use a CorporateUnit's getAllEmployees() method on objects from different classes (ITCompany, Department, Team, Committee)
-        ArrayList<CorporateUnit> corporateUnits = new ArrayList<> (Arrays.asList(resolvd, qaAndTesting, testAutomation, dei));
+        List<CorporateUnit> corporateUnits = new ArrayList<> (Arrays.asList(resolvd, qaAndTesting, testAutomation, dei));
         for (CorporateUnit corporateUnit : corporateUnits) {
-            System.out.println(corporateUnit.getName() + " consists of:");
+            LOGGER.info(corporateUnit.getName() + " consists of:");
             for (Employee employee : corporateUnit.getAllEmployees()) {
-                System.out.println(employee.getName());
+                LOGGER.info(employee.getName());
             }
-            System.out.println();
+            LOGGER.info("");
         }
 
         // use PayableEntity's pay() method
         try {
             jetBrains.pay(420);
         } catch (Exception e) {
-            System.out.println(e);
+            LOGGER.error(e);
         }
         try {
             employee4.pay(employee4.getHourlyWage() * 8);
         } catch (Exception e) {
-            System.out.println(e);
+            LOGGER.error(e);
         }
-        System.out.println();
+        LOGGER.info("");
 
         // create a task and close it
-        HashSet<Stakeholder> task1Stakeholders = new HashSet<>(Arrays.asList(employee3, google));
+        Set<Stakeholder> task1Stakeholders = new HashSet<>(Arrays.asList(employee3, google));
         Task task1 = new Task("Whatchamacallit is shebanging in the BoopLoop's pinto logs and the mainframe hexing gets bungled ", employee4, task1Stakeholders, "open");
-        System.out.println(task1.getStatus() + "\n");
+        LOGGER.info(task1.getStatus() + "\n");
         employee4.finishTask(task1);
-        System.out.println("\n" + task1.getStatus());
-        System.out.println();
+        LOGGER.info("\n" + task1.getStatus());
+        LOGGER.info("");
 
         // use SpaceRequester's method
         employee1.requestSpace();
@@ -187,20 +197,20 @@ public class Main {
         // i can't come up with where i might want to use a static block (fragment of code that gets executed exactly once). i'd appreciate any suggestions
 
         // Homework #5
-        System.out.println("\n" + formatHeader("Homework #5"));
+        LOGGER.info(formatHeader("Homework #5"));
 
         // throw NumberEqualToZeroException
         try {
             employee4.pay(0);
         } catch (NumberEqualToZeroException | NegativeNumberException e) {
-            System.out.println(e);
+            LOGGER.error(e);
         }
 
         // throw NegativeNumberException
         try {
             jetBrains.pay(-2137);
         } catch (NumberEqualToZeroException | NegativeNumberException e) {
-            System.out.println(e);
+            LOGGER.error(e);
         }
 
         // use FileOutputStream (a built-in class that implements AutoCloseable interface)
@@ -221,64 +231,64 @@ public class Main {
                 text = text.concat(employeeDescription);
             }
             fos.write(text.getBytes());
-            System.out.println("Exported to '" + testAutomation.getName() + ".txt' successfully!\n");
+            LOGGER.info("Exported to '" + testAutomation.getName() + ".txt' successfully!\n");
         } catch (Exception e) {
-            System.out.println(e);
+            LOGGER.error(e);
         }
 
         // create class that implements the AutoCloseable interface and close it using the try with resources
         try (MysteriousObject mysteriousObject = new MysteriousObject()) {
-            System.out.println("You've opened a mysterious object! It's " + mysteriousObject);
+            LOGGER.info("You've opened a mysterious object! It's" + mysteriousObject);
         } catch (Exception e) {
-            System.out.println(e);
+            LOGGER.error(e);
         }
 
         // throw ObjectAlreadyIncludedException
         testAutomation.printDescription();
-        System.out.println();
+        LOGGER.info("");
 
         try {
             testAutomation.addEmployee(employee3);
         } catch (ObjectAlreadyIncludedException e) {
-            System.out.print(e);
+            LOGGER.error(e);
         } finally {
-            System.out.println();
+            LOGGER.info("");
         }
 
         try {
             testAutomation.addEmployee(employee6);
         } catch (ObjectAlreadyIncludedException e) {
-            System.out.print(e);
+            LOGGER.error(e);
         } finally {
-            System.out.println();
+            LOGGER.info("");
         }
 
         // throw ObjectNotIncludedException
         try {
             testAutomation.removeEmployee(employee7);
         } catch (ObjectNotIncludedException e) {
-            System.out.print(e);
+            LOGGER.error(e);
         } finally {
-            System.out.println();
+            LOGGER.info("");
         }
 
         try {
             testAutomation.removeEmployee(employee6);
         } catch (ObjectNotIncludedException e) {
-            System.out.print(e);
+            LOGGER.error(e);
         } finally {
-            System.out.println();
+            LOGGER.info("");
         }
 
 //        // EmptyListException (unchecked)
 //        qualityAssurance.printEmployeesDescription();
-//        System.out.println("This won't get printed");
+//        LOGGER.fatal("This won't get printed");
 
         // Homework #6
-        System.out.println(formatHeader("Homework #6"));
+        LOGGER.info(formatHeader("Homework #6"));
 
         // use Map and Set interfaces
-        ArrayList<Employee> allEmployees = new ArrayList<> (Arrays.asList(employee1, employee2, employee3, employee4, employee5, employee6, employee7));
+        List<Employee> allEmployees = new ArrayList<> (Arrays.asList(employee1, employee2, employee3, employee4, employee5, employee6, employee7));
         SortedMap<String, Set<String>> timeMap = new TreeMap<>(); // SortedMap is an interface (cannot be instantiated), but TreeMap is a class
 
         for (Employee employee : allEmployees) { // get timeMap keys
@@ -295,8 +305,40 @@ public class Main {
         }
 
         for (String key : timeMap.keySet()) { // print out timeMap
-            System.out.println(key + " --- " + timeMap.get(key));
+            LOGGER.info(key + " --- " + timeMap.get(key));
         }
-        System.out.println();
+
+        // Homework #8
+        LOGGER.info(formatHeader("Homework #8"));
+
+        // read text from the file and calculate the numbers of the unique words
+        try (FileOutputStream fos = new FileOutputStream("pratchett frequency.txt")) { // try with fos
+            Map<String, Integer> uniqueWords = new TreeMap<>();
+
+            for (String line : Files.readAllLines(Paths.get("src/main/resources/pratchett.txt"))) {
+                for (String word : line.toLowerCase().split("[^a-z]+")) { // split content into words
+                    if(!word.isBlank()){
+                        uniqueWords.put(word, (uniqueWords.containsKey(word) ? uniqueWords.get(word)+1 : 1)); // add words to uniqueWords
+                    }
+                }
+            }
+
+            for (String key : uniqueWords.keySet()) { // format and write uniqueWords to file
+                fos.write((uniqueWords.get(key) + (uniqueWords.get(key)>999 ? "\t" : "\t\t") + key + "\n").getBytes());
+            }
+        } catch (Exception e) {
+            LOGGER.error(e);
+        }
+
+        LOGGER.info("Check out the 'pratchett frequency.txt'!\n");
+
+        // replace all syso with logger. log in two places: console and file
+        // https://logging.apache.org/log4j/1.x/apidocs/org/apache/log4j/Level.html
+        LOGGER.trace("TRACE Level designates finer-grained informational events than the DEBUG"); // this won't get logged
+        LOGGER.debug("DEBUG Level designates fine-grained informational events that are most useful to debug an application."); // this won't get logged
+        LOGGER.info("INFO level designates informational messages that highlight the progress of the application at coarse-grained level. ");
+        LOGGER.warn("WARN level designates potentially harmful situations.");
+        LOGGER.error("ERROR level designates error events that might still allow the application to continue running.");
+        LOGGER.fatal("FATAL level designates very severe error events that will presumably lead the application to abort.");
     }
 }

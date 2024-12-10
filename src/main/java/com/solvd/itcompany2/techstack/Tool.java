@@ -2,17 +2,14 @@ package com.solvd.itcompany2.techstack;
 
 import com.solvd.itcompany2.corporatestructure.Employee;
 
-import java.util.HashSet;
+import java.util.Set;
 
 public class Tool {
 
     private String name;
-    private HashSet<Employee> employees;
+    private Set<Employee> employees;
 
-    public Tool() {
-    }
-
-    public Tool(String name, HashSet<Employee> employees) {
+    public Tool(String name, Set<Employee> employees) {
         this.name = name;
         this.employees = employees;
     }
@@ -36,11 +33,11 @@ public class Tool {
         this.name = name;
     }
 
-    public HashSet<Employee> getEmployees() {
+    public Set<Employee> getEmployees() {
         return employees;
     }
 
-    public void setEmployees(HashSet<Employee> employees) {
+    public void setEmployees(Set<Employee> employees) {
         this.employees = employees;
     }
 }

@@ -1,14 +1,22 @@
 package com.solvd.itcompany2.corporatestructure;
 
-import com.solvd.itcompany2.exceptions.*;
+import com.solvd.itcompany2.exceptions.NegativeNumberException;
+import com.solvd.itcompany2.exceptions.NumberEqualToZeroException;
 import com.solvd.itcompany2.outsideentities.PayableEntity;
-import com.solvd.itcompany2.projectresources.*;
-import static com.solvd.itcompany2.helpers.Formatter.*;
-import static com.solvd.itcompany2.helpers.GlobalVariable.*;
+import com.solvd.itcompany2.projectresources.SpaceRequester;
+import com.solvd.itcompany2.projectresources.Stakeholder;
+import com.solvd.itcompany2.projectresources.Task;
+import com.solvd.itcompany2.projectresources.TaskOwner;
 
-import java.time.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Period;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
+
+import static com.solvd.itcompany2.helpers.Formatter.*;
+import static com.solvd.itcompany2.helpers.GlobalVariable.*;
 
 public final class Employee implements PayableEntity, TaskOwner, Stakeholder, SpaceRequester { // 'final' keyword prevents inheritance. i don't want to have employees of a different class than Employee
 
@@ -66,13 +74,13 @@ public final class Employee implements PayableEntity, TaskOwner, Stakeholder, Sp
     public void printTimeZone() {
         DateTimeFormatter form = DateTimeFormatter.ofPattern("HH:mm, MMMM d");
 
-        System.out.print(new StringBuilder()
+        LOGGER.info(new StringBuilder()
                 .append(this.name)
                 .append("'s time zone is ")
                 .append(ZoneId.of(this.timeZone))
                 .append(". It's ")
                 .append(LocalDateTime.now(ZoneId.of(this.timeZone)).format(form))
-                .append(" in there.\n"));
+                .append(" in there."));
     }
 
     public void printWorkYears() {
@@ -80,7 +88,7 @@ public final class Employee implements PayableEntity, TaskOwner, Stakeholder, Sp
         Period period = Period.between(start, LocalDate.now());
         long months = period.toTotalMonths();
 
-        System.out.print(new StringBuilder()
+        LOGGER.info(new StringBuilder()
                 .append(this.name)
                 .append(" has been working with us since ")
                 .append(start)
@@ -90,10 +98,10 @@ public final class Employee implements PayableEntity, TaskOwner, Stakeholder, Sp
                 .append(months > 12     ? " year(s) and "       : "")
 
                 .append(months > 0      ? period.getMonths()    : "")
-                .append(months > 0      ? " month(s)!\n"        : "")
+                .append(months > 0      ? " month(s)!"          : "")
 
                 .append(months == 0     ? period.getDays()      : "")
-                .append(months == 0     ? " day(s)!\n"          : ""));
+                .append(months == 0     ? " day(s)!"            : ""));
     }
 
     @Override
@@ -111,7 +119,7 @@ public final class Employee implements PayableEntity, TaskOwner, Stakeholder, Sp
             throw new NegativeNumberException(exceptionMessage);
 
         } else {
-            System.out.println(new StringBuilder()
+            LOGGER.info(new StringBuilder()
                     .append(ansiColor(yellowFG, blackBG))
                     .append(" *ka-ching!* ")
                     .append(ansiColor(reset))
@@ -127,7 +135,7 @@ public final class Employee implements PayableEntity, TaskOwner, Stakeholder, Sp
     public void finishTask(Task task){
         task.setStatus("finished");
 
-        System.out.println(new StringBuilder()
+        LOGGER.info(new StringBuilder()
                 .append(ansiColor(cyanFG))
                 .append("Task:\n")
                 .append(ansiColor(reset))
@@ -137,9 +145,9 @@ public final class Employee implements PayableEntity, TaskOwner, Stakeholder, Sp
                 .append("Stakeholders:")
                 .append(ansiColor(reset)));
         for (Stakeholder stakeholder : task.getStakeholders()) {
-            System.out.println(stakeholder.getName());
+            LOGGER.info(stakeholder.getName());
         }
-        System.out.println(new StringBuilder()
+        LOGGER.info(new StringBuilder()
                 .append(ansiColor(cyanFG))
                 .append("Finished by:\n")
                 .append(ansiColor(reset))
@@ -159,11 +167,11 @@ public final class Employee implements PayableEntity, TaskOwner, Stakeholder, Sp
 
     @Override
     public void requestSpace() {
-        System.out.println("Your request has been approved! You booked 1 desk for " + this.getName());
-    };
+        LOGGER.info("Your request has been approved! You booked 1 desk for " + this.getName());
+    }
 
     public String getTime() {
-        DateTimeFormatter form = DateTimeFormatter.ofPattern("YYYY.MM.dd, HH:mm");
+        DateTimeFormatter form = DateTimeFormatter.ofPattern("yyyy.MM.dd, HH:mm");
         return LocalDateTime.now(ZoneId.of(this.timeZone)).format(form);
     }
 
