@@ -1,10 +1,13 @@
 package com.solvd.itcompany2.corporatestructure;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import java.util.Set;
 
-import static com.solvd.itcompany2.helpers.GlobalVariable.LOGGER;
-
 public class Committee extends Team {
+
+    private static final Logger log = LogManager.getLogger(Committee.class);
 
     public Committee(String name, Employee leader, Set<Employee> employees) {
         this.name = name;
@@ -17,7 +20,8 @@ public class Committee extends Team {
         if ((this.name != null) && (this.leader != null) && (this.employees != null)) {
             StringBuilder msg = new StringBuilder();
 
-            msg     .append(this.leader.getName())
+            msg
+                    .append(this.leader.getName())
                     .append(" is the head of ")
                     .append(this.getName())
                     .append(" committee. Other members include: ");
@@ -31,7 +35,7 @@ public class Committee extends Team {
             }
             msg.append(".");
 
-            LOGGER.info(msg);
+            log.info(msg);
         }
     }
 }

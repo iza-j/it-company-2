@@ -1,12 +1,14 @@
 package com.solvd.itcompany2.techstack;
 
 import com.solvd.itcompany2.corporatestructure.Employee;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import java.util.Set;
 
-import static com.solvd.itcompany2.helpers.GlobalVariable.LOGGER;
-
 public class Skill {
+
+    private static final Logger log = LogManager.getLogger(Skill.class);
 
     private String name;
     private Set<Employee> employees;
@@ -17,7 +19,7 @@ public class Skill {
     }
 
     public void printAccess(Tool tool) {
-        LOGGER.info(new StringBuilder()
+        log.info(new StringBuilder()
                 .append("Employees skilled at ")
                 .append(this.name)
                 .append(", but without access to ")
@@ -33,7 +35,7 @@ public class Skill {
                 }
             }
             if (!access) {
-                LOGGER.info(employee.getName());
+                log.info(employee.getName());
             }
         }
     }

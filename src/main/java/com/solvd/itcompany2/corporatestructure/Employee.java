@@ -7,6 +7,8 @@ import com.solvd.itcompany2.projectresources.SpaceRequester;
 import com.solvd.itcompany2.projectresources.Stakeholder;
 import com.solvd.itcompany2.projectresources.Task;
 import com.solvd.itcompany2.projectresources.TaskOwner;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -16,9 +18,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 import static com.solvd.itcompany2.helpers.Formatter.*;
-import static com.solvd.itcompany2.helpers.GlobalVariable.*;
+import static com.solvd.itcompany2.helpers.GlobalVariable.MULTIPLICAND;
+import static com.solvd.itcompany2.helpers.GlobalVariable.MULTIPLIER;
 
 public final class Employee implements PayableEntity, TaskOwner, Stakeholder, SpaceRequester { // 'final' keyword prevents inheritance. i don't want to have employees of a different class than Employee
+
+    private static final Logger log = LogManager.getLogger(Employee.class);
 
     private int id;
     private String name;
@@ -54,14 +59,14 @@ public final class Employee implements PayableEntity, TaskOwner, Stakeholder, Sp
         if (this.getClass() != compared.getClass()) { // if i tried to compare objects from 2 different classes i'd get a ClassCastException (also not good)
             return false;
         }
-        return  this.id == ((Employee) compared).getID() &&
+        return this.id == ((Employee) compared).getID() &&
                 Objects.equals(this.name, ((Employee) compared).getName()) &&
                 Objects.equals(this.firstDay, ((Employee) compared).getFirstDay()); // returns value of && statement
     }
 
     @Override
     public String toString() {
-        return  new StringBuilder()
+        return new StringBuilder()
                 .append("Employee #")
                 .append(id)
                 .append(": ")
@@ -74,7 +79,7 @@ public final class Employee implements PayableEntity, TaskOwner, Stakeholder, Sp
     public void printTimeZone() {
         DateTimeFormatter form = DateTimeFormatter.ofPattern("HH:mm, MMMM d");
 
-        LOGGER.info(new StringBuilder()
+        log.info(new StringBuilder()
                 .append(this.name)
                 .append("'s time zone is ")
                 .append(ZoneId.of(this.timeZone))
@@ -88,20 +93,20 @@ public final class Employee implements PayableEntity, TaskOwner, Stakeholder, Sp
         Period period = Period.between(start, LocalDate.now());
         long months = period.toTotalMonths();
 
-        LOGGER.info(new StringBuilder()
+        log.info(new StringBuilder()
                 .append(this.name)
                 .append(" has been working with us since ")
                 .append(start)
                 .append(". That's ")
 
-                .append(months > 12     ? period.getYears()     : "")
-                .append(months > 12     ? " year(s) and "       : "")
+                .append(months > 12 ? period.getYears() : "")
+                .append(months > 12 ? " year(s) and " : "")
 
-                .append(months > 0      ? period.getMonths()    : "")
-                .append(months > 0      ? " month(s)!"          : "")
+                .append(months > 0 ? period.getMonths() : "")
+                .append(months > 0 ? " month(s)!" : "")
 
-                .append(months == 0     ? period.getDays()      : "")
-                .append(months == 0     ? " day(s)!"            : ""));
+                .append(months == 0 ? period.getDays() : "")
+                .append(months == 0 ? " day(s)!" : ""));
     }
 
     @Override
@@ -119,7 +124,7 @@ public final class Employee implements PayableEntity, TaskOwner, Stakeholder, Sp
             throw new NegativeNumberException(exceptionMessage);
 
         } else {
-            LOGGER.info(new StringBuilder()
+            log.info(new StringBuilder()
                     .append(ansiColor(yellowFG, blackBG))
                     .append(" *ka-ching!* ")
                     .append(ansiColor(reset))
@@ -132,10 +137,10 @@ public final class Employee implements PayableEntity, TaskOwner, Stakeholder, Sp
     }
 
     @Override
-    public void finishTask(Task task){
+    public void finishTask(Task task) {
         task.setStatus("finished");
 
-        LOGGER.info(new StringBuilder()
+        log.info(new StringBuilder()
                 .append(ansiColor(cyanFG))
                 .append("Task:\n")
                 .append(ansiColor(reset))
@@ -145,16 +150,16 @@ public final class Employee implements PayableEntity, TaskOwner, Stakeholder, Sp
                 .append("Stakeholders:")
                 .append(ansiColor(reset)));
         for (Stakeholder stakeholder : task.getStakeholders()) {
-            LOGGER.info(stakeholder.getName());
+            log.info(stakeholder.getName());
         }
-        LOGGER.info(new StringBuilder()
+        log.info(new StringBuilder()
                 .append(ansiColor(cyanFG))
                 .append("Finished by:\n")
                 .append(ansiColor(reset))
                 .append(this.getName()));
     }
 
-    public boolean checkAffiliation (CorporateUnit corporateUnit) {
+    public boolean checkAffiliation(CorporateUnit corporateUnit) {
         boolean affiliation = false;
         for (Employee employee : corporateUnit.getAllEmployees()) {
             if (this == employee) {
@@ -167,7 +172,7 @@ public final class Employee implements PayableEntity, TaskOwner, Stakeholder, Sp
 
     @Override
     public void requestSpace() {
-        LOGGER.info("Your request has been approved! You booked 1 desk for " + this.getName());
+        log.info("Your request has been approved! You booked 1 desk for " + this.getName());
     }
 
     public String getTime() {

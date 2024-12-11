@@ -1,12 +1,14 @@
 package com.solvd.itcompany2.outsideentities;
 
 import com.solvd.itcompany2.techstack.Tool;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import java.util.Set;
 
-import static com.solvd.itcompany2.helpers.GlobalVariable.LOGGER;
-
 public class SoftwareVendor extends Provider {
+
+    private static final Logger log = LogManager.getLogger(SoftwareVendor.class);
 
     private Set<Tool> tools;
 
@@ -18,7 +20,7 @@ public class SoftwareVendor extends Provider {
 
     @Override
     public void phoneCall() {
-        LOGGER.info("Calling...\n.\n.\n.\n" + this.name + "'s customer service is temporarily unavailable. Please message us on BoopLoop.\n");
+        log.info("Calling...\n.\n.\n.\n" + this.name + "'s customer service is temporarily unavailable. Please message us on BoopLoop.\n");
     }
 
     public Set<Tool> getTools() {

@@ -7,15 +7,20 @@ import com.solvd.itcompany2.projectresources.SpaceRequester;
 import com.solvd.itcompany2.projectresources.Stakeholder;
 import com.solvd.itcompany2.projectresources.Task;
 import com.solvd.itcompany2.projectresources.TaskOwner;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 import static com.solvd.itcompany2.helpers.Formatter.*;
-import static com.solvd.itcompany2.helpers.GlobalVariable.*;
+import static com.solvd.itcompany2.helpers.GlobalVariable.MULTIPLICAND;
+import static com.solvd.itcompany2.helpers.GlobalVariable.MULTIPLIER;
 
 public class Team implements CorporateUnit, TaskOwner, Stakeholder, SpaceRequester {
+
+    private static final Logger log = LogManager.getLogger(Team.class);
 
     protected String name;
     protected Employee leader;
@@ -49,13 +54,13 @@ public class Team implements CorporateUnit, TaskOwner, Stakeholder, SpaceRequest
         if (this.getClass() != compared.getClass()) {
             return false;
         }
-        return  Objects.equals(this.name, ((Team) compared).getName()) &&
+        return Objects.equals(this.name, ((Team) compared).getName()) &&
                 Objects.equals(this.leader, ((Team) compared).getLeader());
     }
 
     @Override
     public String toString() {
-        return  new StringBuilder()
+        return new StringBuilder()
                 .append("Team ")
                 .append(this.name == null ? "n/d" : this.name)
                 .append(", led by ")
@@ -67,7 +72,8 @@ public class Team implements CorporateUnit, TaskOwner, Stakeholder, SpaceRequest
         if ((this.name != null) && (this.leader != null) && (this.employees != null)) {
             StringBuilder msg = new StringBuilder();
 
-            msg     .append(this.leader.getName())
+            msg
+                    .append(this.leader.getName())
                     .append(" is in charge of ")
                     .append(this.getName())
                     .append(". ");
@@ -81,7 +87,7 @@ public class Team implements CorporateUnit, TaskOwner, Stakeholder, SpaceRequest
             }
             msg.append(" work alongside them.");
 
-            LOGGER.info(msg);
+            log.info(msg);
         }
     }
 
@@ -92,7 +98,7 @@ public class Team implements CorporateUnit, TaskOwner, Stakeholder, SpaceRequest
             for (Employee employee : this.getAllEmployees()) {
                 employee.printTimeZone();
                 employee.printWorkYears();
-                LOGGER.info("");
+                log.info("");
             }
         }
     }
@@ -113,10 +119,10 @@ public class Team implements CorporateUnit, TaskOwner, Stakeholder, SpaceRequest
     }
 
     @Override
-    public void finishTask(Task task){
+    public void finishTask(Task task) {
         task.setStatus("finished");
 
-        LOGGER.info(new StringBuilder()
+        log.info(new StringBuilder()
                 .append(ansiColor(cyanFG))
                 .append("Task:\n")
                 .append(ansiColor(reset))
@@ -126,9 +132,9 @@ public class Team implements CorporateUnit, TaskOwner, Stakeholder, SpaceRequest
                 .append("Stakeholders:")
                 .append(ansiColor(reset)));
         for (Stakeholder stakeholder : task.getStakeholders()) {
-            LOGGER.info(stakeholder.getName());
+            log.info(stakeholder.getName());
         }
-        LOGGER.info(new StringBuilder()
+        log.info(new StringBuilder()
                 .append(ansiColor(cyanFG))
                 .append("Finished by:\n")
                 .append(ansiColor(reset))
@@ -137,7 +143,7 @@ public class Team implements CorporateUnit, TaskOwner, Stakeholder, SpaceRequest
 
     @Override
     public void requestSpace() {
-        LOGGER.info(new StringBuilder()
+        log.info(new StringBuilder()
                 .append("Your request has been approved! You booked ")
                 .append(this.getAllEmployees().size())
                 .append(" desk(s) for ")
@@ -153,7 +159,7 @@ public class Team implements CorporateUnit, TaskOwner, Stakeholder, SpaceRequest
             newList.add(employee);
             this.setEmployees(newList);
 
-            LOGGER.info(employee.getName() + " added successfully! "); // print success message
+            log.info(employee.getName() + " added successfully! "); // print success message
             this.printDescription();
         }
     }
@@ -176,7 +182,7 @@ public class Team implements CorporateUnit, TaskOwner, Stakeholder, SpaceRequest
                 this.setEmployees(newList);
             }
 
-            LOGGER.info(removedEmployee.getName() + " removed successfully! "); // print success message
+            log.info(removedEmployee.getName() + " removed successfully! "); // print success message
             this.printDescription();
         }
     }

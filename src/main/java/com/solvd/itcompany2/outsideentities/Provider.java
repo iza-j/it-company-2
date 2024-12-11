@@ -2,11 +2,14 @@ package com.solvd.itcompany2.outsideentities;
 
 import com.solvd.itcompany2.exceptions.NegativeNumberException;
 import com.solvd.itcompany2.exceptions.NumberEqualToZeroException;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import static com.solvd.itcompany2.helpers.Formatter.*;
-import static com.solvd.itcompany2.helpers.GlobalVariable.LOGGER;
 
 public abstract class Provider implements PayableEntity { // an abstract class cannot be instantiated on its own
+
+    private static final Logger log = LogManager.getLogger(Provider.class);
 
     protected String name;
     protected String phoneNumber;
@@ -28,7 +31,7 @@ public abstract class Provider implements PayableEntity { // an abstract class c
             throw new NegativeNumberException(exceptionMessage);
 
         } else {
-            LOGGER.info(new StringBuilder()
+            log.info(new StringBuilder()
                     .append(ansiColor(yellowFG, blackBG))
                     .append(" *ka-ching!* ")
                     .append(ansiColor(reset))
