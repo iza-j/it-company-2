@@ -3,13 +3,13 @@ package com.solvd.itcompany2.corporatestructure;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import java.util.Set;
+import java.util.List;
 
 public class Committee extends Team {
 
-    private static final Logger log = LogManager.getLogger(Committee.class);
+    private static final Logger LOGGER = LogManager.getLogger(Committee.class);
 
-    public Committee(String name, Employee leader, Set<Employee> employees) {
+    public Committee(String name, Employee leader, List<Employee> employees) {
         this.name = name;
         this.leader = leader;
         this.employees = employees;
@@ -35,7 +35,7 @@ public class Committee extends Team {
             }
             msg.append(".");
 
-            log.info(msg);
+            LOGGER.info(msg);
         }
     }
 }

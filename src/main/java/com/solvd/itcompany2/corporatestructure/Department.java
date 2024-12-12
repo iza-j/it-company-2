@@ -1,26 +1,26 @@
 package com.solvd.itcompany2.corporatestructure;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Department implements CorporateUnit {
 
     private String name;
     private Employee headOfDpt;
-    private Set<Team> teams;
+    private List<Team> teams;
 
     public Department() {
     }
 
-    public Department(String name, Employee headOfDpt, Set<Team> teams) {
+    public Department(String name, Employee headOfDpt, List<Team> teams) {
         this.name = name;
         this.headOfDpt = headOfDpt;
         this.teams = teams;
     }
 
     @Override
-    public Set<Employee> getAllEmployees() {
-        Set<Employee> departmentEmployees = new HashSet<>();
+    public List<Employee> getAllEmployees() {
+        List<Employee> departmentEmployees = new ArrayList<>();
 
         if (this.getHeadOfDpt() != null) { // if a head of department exists
             departmentEmployees.add(this.getHeadOfDpt());
@@ -35,11 +35,11 @@ public class Department implements CorporateUnit {
         return departmentEmployees;
     }
 
-    public Set<Team> getTeams() {
+    public List<Team> getTeams() {
         return teams;
     }
 
-    public void setTeams(Set<Team> teams) {
+    public void setTeams(List<Team> teams) {
         this.teams = teams;
     }
 

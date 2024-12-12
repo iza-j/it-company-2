@@ -10,9 +10,9 @@ import com.solvd.itcompany2.projectresources.TaskOwner;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 import static com.solvd.itcompany2.helpers.Formatter.*;
 import static com.solvd.itcompany2.helpers.GlobalVariable.MULTIPLICAND;
@@ -20,16 +20,16 @@ import static com.solvd.itcompany2.helpers.GlobalVariable.MULTIPLIER;
 
 public class Team implements CorporateUnit, TaskOwner, Stakeholder, SpaceRequester {
 
-    private static final Logger log = LogManager.getLogger(Team.class);
+    private static final Logger LOGGER = LogManager.getLogger(Team.class);
 
     protected String name;
     protected Employee leader;
-    protected Set<Employee> employees;
+    protected List<Employee> employees;
 
     public Team() {
     }
 
-    public Team(String name, Employee leader, Set<Employee> employees) {
+    public Team(String name, Employee leader, List<Employee> employees) {
         this.name = name;
         this.leader = leader;
         this.employees = employees;
@@ -87,7 +87,7 @@ public class Team implements CorporateUnit, TaskOwner, Stakeholder, SpaceRequest
             }
             msg.append(" work alongside them.");
 
-            log.info(msg);
+            LOGGER.info(msg);
         }
     }
 
@@ -98,14 +98,14 @@ public class Team implements CorporateUnit, TaskOwner, Stakeholder, SpaceRequest
             for (Employee employee : this.getAllEmployees()) {
                 employee.printTimeZone();
                 employee.printWorkYears();
-                log.info("");
+                LOGGER.info("");
             }
         }
     }
 
     @Override
-    public final Set<Employee> getAllEmployees() { // final method can't be overridden by a subclass
-        Set<Employee> teamEmployees = new HashSet<>();
+    public final List<Employee> getAllEmployees() { // final method can't be overridden by a subclass
+        List<Employee> teamEmployees = new ArrayList<>();
 
         if (this.getLeader() != null) { // if a team leader exists
             teamEmployees.add(this.getLeader());
@@ -122,7 +122,7 @@ public class Team implements CorporateUnit, TaskOwner, Stakeholder, SpaceRequest
     public void finishTask(Task task) {
         task.setStatus("finished");
 
-        log.info(new StringBuilder()
+        LOGGER.info(new StringBuilder()
                 .append(ansiColor(cyanFG))
                 .append("Task:\n")
                 .append(ansiColor(reset))
@@ -132,9 +132,9 @@ public class Team implements CorporateUnit, TaskOwner, Stakeholder, SpaceRequest
                 .append("Stakeholders:")
                 .append(ansiColor(reset)));
         for (Stakeholder stakeholder : task.getStakeholders()) {
-            log.info(stakeholder.getName());
+            LOGGER.info(stakeholder.getName());
         }
-        log.info(new StringBuilder()
+        LOGGER.info(new StringBuilder()
                 .append(ansiColor(cyanFG))
                 .append("Finished by:\n")
                 .append(ansiColor(reset))
@@ -143,7 +143,7 @@ public class Team implements CorporateUnit, TaskOwner, Stakeholder, SpaceRequest
 
     @Override
     public void requestSpace() {
-        log.info(new StringBuilder()
+        LOGGER.info(new StringBuilder()
                 .append("Your request has been approved! You booked ")
                 .append(this.getAllEmployees().size())
                 .append(" desk(s) for ")
@@ -155,11 +155,11 @@ public class Team implements CorporateUnit, TaskOwner, Stakeholder, SpaceRequest
             throw new ObjectAlreadyIncludedException(employee.getName() + " is already on the team, so you can't add them.");
 
         } else {
-            Set<Employee> newList = new HashSet<>(this.getEmployees());
+            List<Employee> newList = new ArrayList<>(this.getEmployees());
             newList.add(employee);
             this.setEmployees(newList);
 
-            log.info(employee.getName() + " added successfully! "); // print success message
+            LOGGER.info(employee.getName() + " added successfully! "); // print success message
             this.printDescription();
         }
     }
@@ -173,7 +173,7 @@ public class Team implements CorporateUnit, TaskOwner, Stakeholder, SpaceRequest
                 this.setLeader(null);
 
             } else {
-                Set<Employee> newList = new HashSet<>();
+                List<Employee> newList = new ArrayList<>();
                 for (Employee oldEmployee : this.getEmployees()) {
                     if (oldEmployee != removedEmployee) {
                         newList.add(oldEmployee);
@@ -182,7 +182,7 @@ public class Team implements CorporateUnit, TaskOwner, Stakeholder, SpaceRequest
                 this.setEmployees(newList);
             }
 
-            log.info(removedEmployee.getName() + " removed successfully! "); // print success message
+            LOGGER.info(removedEmployee.getName() + " removed successfully! "); // print success message
             this.printDescription();
         }
     }
@@ -204,11 +204,11 @@ public class Team implements CorporateUnit, TaskOwner, Stakeholder, SpaceRequest
         this.leader = leader;
     }
 
-    public Set<Employee> getEmployees() {
+    public List<Employee> getEmployees() {
         return employees;
     }
 
-    public void setEmployees(Set<Employee> employees) {
+    public void setEmployees(List<Employee> employees) {
         this.employees = employees;
     }
 }

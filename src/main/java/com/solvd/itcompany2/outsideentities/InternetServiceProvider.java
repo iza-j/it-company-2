@@ -5,7 +5,7 @@ import org.apache.log4j.Logger;
 
 public class InternetServiceProvider extends Provider {
 
-    private static final Logger log = LogManager.getLogger(InternetServiceProvider.class);
+    private static final Logger LOGGER = LogManager.getLogger(InternetServiceProvider.class);
 
     private String country;
 
@@ -17,7 +17,7 @@ public class InternetServiceProvider extends Provider {
 
     @Override
     public void phoneCall() {
-        log.info("Calling...\n.\n.\n.\nPlease call later. " + this.name + "'s customer service team waits to help you on second mondays of every third month, from 1pm til 2pm.\n");
+        LOGGER.info("Calling...\n.\n.\n.\nPlease call later. " + this.name + "'s customer service team waits to help you on second mondays of every third month, from 1pm til 2pm.\n");
     }
 
     public String getCountry() {

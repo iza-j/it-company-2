@@ -1,15 +1,15 @@
 package com.solvd.itcompany2.projectresources;
 
-import java.util.Set;
+import java.util.List;
 
 public class Task {
 
     private String description;
     private TaskOwner owner;
-    private Set<Stakeholder> stakeholders;
+    private List<Stakeholder> stakeholders;
     private String status;
 
-    public Task(String description, TaskOwner owner, Set<Stakeholder> stakeholders, String status) {
+    public Task(String description, TaskOwner owner, List<Stakeholder> stakeholders, String status) {
         this.description = description;
         this.owner = owner;
         this.stakeholders = stakeholders;
@@ -32,11 +32,11 @@ public class Task {
         this.owner = owner;
     }
 
-    public Set<Stakeholder> getStakeholders() {
+    public List<Stakeholder> getStakeholders() {
         return stakeholders;
     }
 
-    public void setStakeholders(Set<Stakeholder> stakeholders) {
+    public void setStakeholders(List<Stakeholder> stakeholders) {
         this.stakeholders = stakeholders;
     }
 

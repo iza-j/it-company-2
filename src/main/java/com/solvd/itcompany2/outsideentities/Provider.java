@@ -9,7 +9,7 @@ import static com.solvd.itcompany2.helpers.Formatter.*;
 
 public abstract class Provider implements PayableEntity { // an abstract class cannot be instantiated on its own
 
-    private static final Logger log = LogManager.getLogger(Provider.class);
+    private static final Logger LOGGER = LogManager.getLogger(Provider.class);
 
     protected String name;
     protected String phoneNumber;
@@ -31,7 +31,7 @@ public abstract class Provider implements PayableEntity { // an abstract class c
             throw new NegativeNumberException(exceptionMessage);
 
         } else {
-            log.info(new StringBuilder()
+            LOGGER.info(new StringBuilder()
                     .append(ansiColor(yellowFG, blackBG))
                     .append(" *ka-ching!* ")
                     .append(ansiColor(reset))

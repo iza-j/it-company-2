@@ -4,22 +4,22 @@ import com.solvd.itcompany2.corporatestructure.Employee;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import java.util.Set;
+import java.util.List;
 
 public class Skill {
 
-    private static final Logger log = LogManager.getLogger(Skill.class);
+    private static final Logger LOGGER = LogManager.getLogger(Skill.class);
 
     private String name;
-    private Set<Employee> employees;
+    private List<Employee> employees;
 
-    public Skill(String name, Set<Employee> employees) {
+    public Skill(String name, List<Employee> employees) {
         this.name = name;
         this.employees = employees;
     }
 
     public void printAccess(Tool tool) {
-        log.info(new StringBuilder()
+        LOGGER.info(new StringBuilder()
                 .append("Employees skilled at ")
                 .append(this.name)
                 .append(", but without access to ")
@@ -35,7 +35,7 @@ public class Skill {
                 }
             }
             if (!access) {
-                log.info(employee.getName());
+                LOGGER.info(employee.getName());
             }
         }
     }
@@ -48,11 +48,11 @@ public class Skill {
         this.name = name;
     }
 
-    public Set<Employee> getEmployees() {
+    public List<Employee> getEmployees() {
         return employees;
     }
 
-    public void setEmployees(Set<Employee> employees) {
+    public void setEmployees(List<Employee> employees) {
         this.employees = employees;
     }
 }

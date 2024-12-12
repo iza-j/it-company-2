@@ -2,14 +2,14 @@ package com.solvd.itcompany2.techstack;
 
 import com.solvd.itcompany2.corporatestructure.Employee;
 
-import java.util.Set;
+import java.util.List;
 
 public class Tool {
 
     private String name;
-    private Set<Employee> employees;
+    private List<Employee> employees;
 
-    public Tool(String name, Set<Employee> employees) {
+    public Tool(String name, List<Employee> employees) {
         this.name = name;
         this.employees = employees;
     }
@@ -33,11 +33,11 @@ public class Tool {
         this.name = name;
     }
 
-    public Set<Employee> getEmployees() {
+    public List<Employee> getEmployees() {
         return employees;
     }
 
-    public void setEmployees(Set<Employee> employees) {
+    public void setEmployees(List<Employee> employees) {
         this.employees = employees;
     }
 }

@@ -23,7 +23,7 @@ import static com.solvd.itcompany2.helpers.GlobalVariable.MULTIPLIER;
 
 public final class Employee implements PayableEntity, TaskOwner, Stakeholder, SpaceRequester { // 'final' keyword prevents inheritance. i don't want to have employees of a different class than Employee
 
-    private static final Logger log = LogManager.getLogger(Employee.class);
+    private static final Logger LOGGER = LogManager.getLogger(Employee.class);
 
     private int id;
     private String name;
@@ -79,7 +79,7 @@ public final class Employee implements PayableEntity, TaskOwner, Stakeholder, Sp
     public void printTimeZone() {
         DateTimeFormatter form = DateTimeFormatter.ofPattern("HH:mm, MMMM d");
 
-        log.info(new StringBuilder()
+        LOGGER.info(new StringBuilder()
                 .append(this.name)
                 .append("'s time zone is ")
                 .append(ZoneId.of(this.timeZone))
@@ -93,7 +93,7 @@ public final class Employee implements PayableEntity, TaskOwner, Stakeholder, Sp
         Period period = Period.between(start, LocalDate.now());
         long months = period.toTotalMonths();
 
-        log.info(new StringBuilder()
+        LOGGER.info(new StringBuilder()
                 .append(this.name)
                 .append(" has been working with us since ")
                 .append(start)
@@ -124,7 +124,7 @@ public final class Employee implements PayableEntity, TaskOwner, Stakeholder, Sp
             throw new NegativeNumberException(exceptionMessage);
 
         } else {
-            log.info(new StringBuilder()
+            LOGGER.info(new StringBuilder()
                     .append(ansiColor(yellowFG, blackBG))
                     .append(" *ka-ching!* ")
                     .append(ansiColor(reset))
@@ -140,7 +140,7 @@ public final class Employee implements PayableEntity, TaskOwner, Stakeholder, Sp
     public void finishTask(Task task) {
         task.setStatus("finished");
 
-        log.info(new StringBuilder()
+        LOGGER.info(new StringBuilder()
                 .append(ansiColor(cyanFG))
                 .append("Task:\n")
                 .append(ansiColor(reset))
@@ -150,9 +150,9 @@ public final class Employee implements PayableEntity, TaskOwner, Stakeholder, Sp
                 .append("Stakeholders:")
                 .append(ansiColor(reset)));
         for (Stakeholder stakeholder : task.getStakeholders()) {
-            log.info(stakeholder.getName());
+            LOGGER.info(stakeholder.getName());
         }
-        log.info(new StringBuilder()
+        LOGGER.info(new StringBuilder()
                 .append(ansiColor(cyanFG))
                 .append("Finished by:\n")
                 .append(ansiColor(reset))
@@ -172,7 +172,7 @@ public final class Employee implements PayableEntity, TaskOwner, Stakeholder, Sp
 
     @Override
     public void requestSpace() {
-        log.info("Your request has been approved! You booked 1 desk for " + this.getName());
+        LOGGER.info("Your request has been approved! You booked 1 desk for " + this.getName());
     }
 
     public String getTime() {

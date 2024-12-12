@@ -1,10 +1,10 @@
 package com.solvd.itcompany2.corporatestructure;
 
-import java.util.Set;
+import java.util.List;
 
 public interface CorporateUnit {
 
-    Set<Employee> getAllEmployees();
+    List<Employee> getAllEmployees();
 
     String getName();
 }
