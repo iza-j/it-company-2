@@ -7,9 +7,9 @@ public class Task {
     private String description;
     private TaskOwner owner;
     private List<Stakeholder> stakeholders;
-    private String status;
+    private TaskStatus status;
 
-    public Task(String description, TaskOwner owner, List<Stakeholder> stakeholders, String status) {
+    public Task(String description, TaskOwner owner, List<Stakeholder> stakeholders, TaskStatus status) {
         this.description = description;
         this.owner = owner;
         this.stakeholders = stakeholders;
@@ -40,11 +40,11 @@ public class Task {
         this.stakeholders = stakeholders;
     }
 
-    public String getStatus() {
+    public TaskStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(TaskStatus status) {
         this.status = status;
     }
 }

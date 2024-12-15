@@ -2,19 +2,15 @@ package com.solvd.itcompany2.corporatestructure;
 
 import com.solvd.itcompany2.exceptions.NegativeNumberException;
 import com.solvd.itcompany2.exceptions.NumberEqualToZeroException;
+import com.solvd.itcompany2.helpers.Territory;
 import com.solvd.itcompany2.outsideentities.PayableEntity;
-import com.solvd.itcompany2.projectresources.SpaceRequester;
-import com.solvd.itcompany2.projectresources.Stakeholder;
-import com.solvd.itcompany2.projectresources.Task;
-import com.solvd.itcompany2.projectresources.TaskOwner;
+import com.solvd.itcompany2.projectresources.*;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 import static com.solvd.itcompany2.helpers.Formatter.*;
@@ -27,14 +23,14 @@ public final class Employee implements PayableEntity, TaskOwner, Stakeholder, Sp
 
     private int id;
     private String name;
-    private String timeZone; // https://mkyong.com/java8/java-display-all-zoneid-and-its-utc-offset/
+    private Territory territory; // https://mkyong.com/java8/java-display-all-zoneid-and-its-utc-offset/
     private String firstDay;
     private Double hourlyWage;
 
-    public Employee(int id, String name, String timeZone, String firstDay, Double hourlyWage) {
+    public Employee(int id, String name, Territory territory, String firstDay, Double hourlyWage) {
         this.id = id;
         this.name = name;
-        this.timeZone = timeZone;
+        this.territory = territory;
         this.firstDay = firstDay;
         this.hourlyWage = hourlyWage;
     }
@@ -77,14 +73,12 @@ public final class Employee implements PayableEntity, TaskOwner, Stakeholder, Sp
     }
 
     public void printTimeZone() {
-        DateTimeFormatter form = DateTimeFormatter.ofPattern("HH:mm, MMMM d");
-
         LOGGER.info(new StringBuilder()
                 .append(this.name)
                 .append("'s time zone is ")
-                .append(ZoneId.of(this.timeZone))
+                .append(ZoneId.of(this.territory.getTimeZone()))
                 .append(". It's ")
-                .append(LocalDateTime.now(ZoneId.of(this.timeZone)).format(form))
+                .append(this.territory.getTimeHourDate())
                 .append(" in there."));
     }
 
@@ -138,7 +132,7 @@ public final class Employee implements PayableEntity, TaskOwner, Stakeholder, Sp
 
     @Override
     public void finishTask(Task task) {
-        task.setStatus("finished");
+        task.setStatus(TaskStatus.COMPLETED);
 
         LOGGER.info(new StringBuilder()
                 .append(ansiColor(cyanFG))
@@ -176,8 +170,7 @@ public final class Employee implements PayableEntity, TaskOwner, Stakeholder, Sp
     }
 
     public String getTime() {
-        DateTimeFormatter form = DateTimeFormatter.ofPattern("yyyy.MM.dd, HH:mm");
-        return LocalDateTime.now(ZoneId.of(this.timeZone)).format(form);
+        return this.territory.getTimeDateHour();
     }
 
     public int getID() {
@@ -197,12 +190,12 @@ public final class Employee implements PayableEntity, TaskOwner, Stakeholder, Sp
         this.name = name;
     }
 
-    public String getTimeZone() {
-        return timeZone;
+    public Territory getTerritory() {
+        return territory;
     }
 
-    public void setTimeZone(String timeZone) {
-        this.timeZone = timeZone;
+    public void setTerritory(Territory territory) {
+        this.territory = territory;
     }
 
     public String getFirstDay() {

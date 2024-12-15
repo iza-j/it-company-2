@@ -2,14 +2,12 @@ package com.solvd.itcompany2;
 
 import com.solvd.itcompany2.corporatestructure.*;
 import com.solvd.itcompany2.exceptions.*;
+import com.solvd.itcompany2.helpers.Territory;
 import com.solvd.itcompany2.outsideentities.Client;
 import com.solvd.itcompany2.outsideentities.InternetServiceProvider;
 import com.solvd.itcompany2.outsideentities.Provider;
 import com.solvd.itcompany2.outsideentities.SoftwareVendor;
-import com.solvd.itcompany2.projectresources.Project;
-import com.solvd.itcompany2.projectresources.Stakeholder;
-import com.solvd.itcompany2.projectresources.Task;
-import com.solvd.itcompany2.projectresources.TimeTracker;
+import com.solvd.itcompany2.projectresources.*;
 import com.solvd.itcompany2.techstack.Skill;
 import com.solvd.itcompany2.techstack.Tool;
 import org.apache.commons.io.FileUtils;
@@ -21,8 +19,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.function.BiPredicate;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
-import static com.solvd.itcompany2.helpers.Formatter.formatHeader;
+import static com.solvd.itcompany2.helpers.Formatter.*;
 
 public class Main {
 
@@ -33,13 +34,13 @@ public class Main {
         LOGGER.info(formatHeader("Homework #2"));
 
         // create employees
-        Employee employee1 = new Employee(1, "Karol Zakrętka", "Antarctica/Troll", "2002-01-09", 714.0);
-        Employee employee2 = new Employee(2, "Zofia Cętka", "US/Pacific", "2013-12-29", 301.7);
-        Employee employee3 = new Employee(3, "Michał Dętka", "Japan", "2017-07-07", 162.0);
-        Employee employee4 = new Employee(4, "Izabella Jętka", "Poland", "2024-10-28", 92.93);
-        Employee employee5 = new Employee(5, "Jakub Piętka", "Portugal", "2024-04-29", 87.21);
-        Employee employee6 = new Employee(6, "Agata Smętka", "Poland", "2024-04-27", 107.03);
-        Employee employee7 = new Employee(7, "Maciej Kocimiętka", "Asia/Seoul", "2022-11-07", 111.76);
+        Employee employee1 = new Employee(1, "Karol Zakrętka", Territory.ANTARCTICA, "2002-01-09", 714.0);
+        Employee employee2 = new Employee(2, "Zofia Cętka", Territory.CALIFORNIA, "2013-12-29", 301.7);
+        Employee employee3 = new Employee(3, "Michał Dętka", Territory.JAPAN, "2017-07-07", 162.0);
+        Employee employee4 = new Employee(4, "Izabella Jętka", Territory.POLAND, "2024-10-28", 92.93);
+        Employee employee5 = new Employee(5, "Jakub Piętka", Territory.PORTUGAL, "2024-04-29", 87.21);
+        Employee employee6 = new Employee(6, "Agata Smętka", Territory.POLAND, "2024-04-27", 107.03);
+        Employee employee7 = new Employee(7, "Maciej Kocimiętka", Territory.SOUTH_KOREA, "2022-11-07", 111.76);
 
         // create teams
         Team testAutomation = new Team("Test Automation", employee3, new ArrayList<>(Arrays.asList(employee4, employee5)));
@@ -188,7 +189,7 @@ public class Main {
 
         // create a task and close it
         List<Stakeholder> task1Stakeholders = new ArrayList<>(Arrays.asList(employee3, google));
-        Task task1 = new Task("Whatchamacallit is shebanging in the BoopLoop's pinto logs and the mainframe hexing gets bungled ", employee4, task1Stakeholders, "open");
+        Task task1 = new Task("Whatchamacallit is shebanging in the BoopLoop's pinto logs and the mainframe hexing gets bungled ", employee4, task1Stakeholders, TaskStatus.OPEN);
         LOGGER.info(task1.getStatus() + "\n");
         employee4.finishTask(task1);
         LOGGER.info("\n" + task1.getStatus());
@@ -229,7 +230,7 @@ public class Main {
                         .append("\n    Working since: ")
                         .append(employee.getFirstDay())
                         .append("\n    Time zone: ")
-                        .append(employee.getTimeZone())
+                        .append(employee.getTerritory().getTimeZone())
                         .append("\n")
                         .toString();
                 text = text.concat(employeeDescription);
@@ -340,5 +341,38 @@ public class Main {
         LOGGER.warn("WARN level designates potentially harmful situations.");
         LOGGER.error("ERROR level designates error events that might still allow the application to continue running.");
         LOGGER.fatal("FATAL level designates very severe error events that will presumably lead the application to abort.");
+
+        // Homework #9
+        LOGGER.info(formatHeader("Homework #9"));
+
+        LOGGER.info("Consumer:\tTakes an input and performs an operation.");
+        LOGGER.info("Supplier:\tProvides a result without taking any input.");
+        LOGGER.info("Function:\tTakes an input and returns a transformed result.");
+        LOGGER.info("Predicate:\tTakes an input and returns a boolean value.");
+        LOGGER.info("Runnable:\tRepresents a task that takes no input and returns no result.\n");
+
+        // use Runnable, Function (formatName in Office enum)
+        Runnable printAllOfficesInfo = () -> Arrays.stream(Office.values()).forEach(office -> LOGGER.info(office.getInfo()));
+        printAllOfficesInfo.run();
+
+        // use BiPredicate
+        BiPredicate<Employee, CorporateUnit> checkAffiliation = (employee, unit) -> unit.getAllEmployees().contains(employee);
+        allEmployees.forEach(employee -> LOGGER.info(employee.getName() + ": " + checkAffiliation.test(employee, testAutomation)));
+
+        // use Consumer
+        LOGGER.info("\n" + employee4.getHourlyWage());
+        Consumer<Employee> raiseWage = employee -> employee.setHourlyWage(employee.getHourlyWage() * 2);
+        raiseWage.andThen(raiseWage).accept(employee4);
+        LOGGER.info(employee4.getHourlyWage());
+
+        // use Supplier
+        Supplier<String> getTaskStatuses = () -> Arrays.toString(TaskStatus.values());
+        LOGGER.info("\nYou can set a task's status to: " + getTaskStatuses.get() + "\n");
+
+        // create a lambda with generic
+        Consumer<Object> colorify = item -> LOGGER.info(ansiColor(new Random().nextInt(31, 36)) + item.toString() + ansiColor(reset));
+        colorify.accept("i have no other ideas for a generic lambda");
+        colorify.accept(398722226);
+        colorify.accept(employee4);
     }
 }

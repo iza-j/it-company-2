@@ -3,10 +3,7 @@ package com.solvd.itcompany2.corporatestructure;
 import com.solvd.itcompany2.exceptions.EmptyListException;
 import com.solvd.itcompany2.exceptions.ObjectAlreadyIncludedException;
 import com.solvd.itcompany2.exceptions.ObjectNotIncludedException;
-import com.solvd.itcompany2.projectresources.SpaceRequester;
-import com.solvd.itcompany2.projectresources.Stakeholder;
-import com.solvd.itcompany2.projectresources.Task;
-import com.solvd.itcompany2.projectresources.TaskOwner;
+import com.solvd.itcompany2.projectresources.*;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -120,7 +117,7 @@ public class Team implements CorporateUnit, TaskOwner, Stakeholder, SpaceRequest
 
     @Override
     public void finishTask(Task task) {
-        task.setStatus("finished");
+        task.setStatus(TaskStatus.COMPLETED);
 
         LOGGER.info(new StringBuilder()
                 .append(ansiColor(cyanFG))

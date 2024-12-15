@@ -20,6 +20,14 @@ public abstract class Formatter {
                 .toString();
     }
 
+    public static String ansiColor(int code) { // static method: you don't have to instantiate any objects in order to use it
+        return new StringBuilder()
+                .append("\u001B[")
+                .append(code)
+                .append("m")
+                .toString();
+    }
+
     public static String ansiColor(String code, String code2) {
         return new StringBuilder()
                 .append("\u001B[")
