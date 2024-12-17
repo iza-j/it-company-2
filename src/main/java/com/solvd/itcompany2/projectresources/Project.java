@@ -20,9 +20,7 @@ public class Project {
     }
 
     public BigDecimal getEarnings() {
-        BigDecimal h = new BigDecimal(this.getPersonHours());
-        BigDecimal earnings = hourlyRate.multiply(h);
-        return earnings.setScale(2, RoundingMode.DOWN);
+        return new BigDecimal(this.personHours).multiply(this.hourlyRate).setScale(2, RoundingMode.DOWN);
     }
 
     public Client getClient() {

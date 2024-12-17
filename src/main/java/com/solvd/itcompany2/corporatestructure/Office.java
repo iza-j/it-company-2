@@ -16,13 +16,13 @@ public enum Office {
     private final String address;
     private final String phoneNumber;
 
+    private final Function<Office, String> formatName = office -> ansiColor(cyanFG) + office.name().replace("_", " ") + ansiColor(reset);
+
     Office(Territory territory, String address, String phoneNumber) {
         this.territory = territory;
         this.address = address;
         this.phoneNumber = phoneNumber;
     }
-
-    final Function<Office, String> formatName = office -> ansiColor(cyanFG) + office.name().replace("_", " ") + ansiColor(reset);
 
     public String getInfo() {
         return new StringBuilder()

@@ -17,11 +17,13 @@ import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.lang.reflect.*;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import static com.solvd.itcompany2.helpers.Formatter.*;
 
@@ -108,21 +110,15 @@ public class Main {
 
         // print employees' hash codes
         List<Employee> employeeList = new ArrayList<>(Arrays.asList(employee1, employee2, employee3, employee4, employee5, employee6));
-        for (Employee employee : employeeList) {
-            LOGGER.info(employee.hashCode());
-        }
+        employeeList.forEach(employee -> LOGGER.info(employee.hashCode()));
         LOGGER.info("");
 
         // print toString's output for all employees
-        for (Employee employee : employeeList) {
-            LOGGER.info(employee.toString());
-        }
+        employeeList.forEach(employee -> LOGGER.info(employee.toString()));
         LOGGER.info("");
 
         // compare all employees to employee6
-        for (Employee employee : employeeList) {
-            LOGGER.info(employee.equals(employee6));
-        }
+        employeeList.forEach(employee -> LOGGER.info(employee.equals(employee6)));
         LOGGER.info("");
 
         // you can find comments about overriding in the Employee class
@@ -137,9 +133,7 @@ public class Main {
         // create a committe & a taskforce, then print their descriptions
         Team dei = new Committee("Diversity, Equity and Inclusion", employee2, new ArrayList<>(Arrays.asList(employee3, employee4)));
         Team christmasParty = new TaskForce("Christmas Party Organizers", employee4, new ArrayList<>(Arrays.asList(employee2, employee5)));
-        dei.printDescription();
-        christmasParty.printDescription();
-        testAutomation.printDescription();
+        new ArrayList<>(Arrays.asList(dei, christmasParty, testAutomation)).stream().forEach(team -> team.printDescription());
         LOGGER.info("");
 
         // check whether an employee belongs to different CorporateUnits
@@ -168,9 +162,7 @@ public class Main {
         List<CorporateUnit> corporateUnits = new ArrayList<>(Arrays.asList(resolvd, qaAndTesting, testAutomation, dei));
         for (CorporateUnit corporateUnit : corporateUnits) {
             LOGGER.info(corporateUnit.getName() + " consists of:");
-            for (Employee employee : corporateUnit.getAllEmployees()) {
-                LOGGER.info(employee.getName());
-            }
+            corporateUnit.getAllEmployees().forEach(employee -> LOGGER.info(employee.getName()));
             LOGGER.info("");
         }
 
@@ -296,9 +288,7 @@ public class Main {
         List<Employee> allEmployees = new ArrayList<>(Arrays.asList(employee1, employee2, employee3, employee4, employee5, employee6, employee7));
         SortedMap<String, Set<String>> timeMap = new TreeMap<>(); // SortedMap is an interface (cannot be instantiated), but TreeMap is a class
 
-        for (Employee employee : allEmployees) { // get timeMap keys
-            timeMap.put(employee.getTime(), new TreeSet<>());
-        }
+        allEmployees.forEach(employee -> timeMap.put(employee.getTime(), new TreeSet<>()));
 
         for (Employee employee : allEmployees) {
             String time = employee.getTime();
@@ -309,9 +299,7 @@ public class Main {
             timeMap.put(time, allNames);
         }
 
-        for (String key : timeMap.keySet()) { // print out timeMap
-            LOGGER.info(key + " --- " + timeMap.get(key));
-        }
+        timeMap.keySet().forEach(key -> LOGGER.info(key + " --- " + timeMap.get(key)));
 
         // Homework #8
         LOGGER.info(formatHeader("Homework #8"));
@@ -374,5 +362,77 @@ public class Main {
         colorify.accept("i have no other ideas for a generic lambda");
         colorify.accept(398722226);
         colorify.accept(employee4);
+
+        // Homework #10
+        LOGGER.info(formatHeader("Homework #10"));
+
+        // use stream().foreach ---> printAllOfficesInfo in Main
+        // use stream().anyMatch ---> checkAccess() in Tool
+
+        // use stream().allMatch
+        boolean over80 = testAutomation.getEmployees().stream().allMatch(employee -> employee.getHourlyWage() > 80);
+        LOGGER.info("Are all test automation employees making over 80 pln/hour?: " + over80 + "\n");
+
+        // get employees from teams that are not empty. use stream().filter, .flatMap, .map, .peek, .collect
+        qualityAssurance.setEmployees(new ArrayList<>(Arrays.asList(employee6, employee7)));
+        Set<String> realTeamEmployeeNames = resolvd.getDepartments().stream().filter(department -> department.getTeams() != null)
+                .flatMap(department -> department.getTeams().stream().filter(team -> team.getEmployees() != null))
+                .flatMap(team -> team.getAllEmployees().stream().filter(employee -> employee.getName() != null))
+                .map(employee -> employee.getName())
+                .peek(name -> LOGGER.info(name))
+                .collect(Collectors.toSet());
+
+        // use stream().count
+        LOGGER.info("\nNumber of all employees in Resolvd inc: " + resolvd.getAllEmployees().stream().count());
+
+        // use stream().findFirst, return Optional<>
+        Optional<String> earliest = resolvd.getAllEmployees().stream()
+                .map(employee -> employee.getTerritory().getTimeHour())
+                .sorted().findFirst();
+        earliest.ifPresent(content -> LOGGER.info("Right now, the earliest hour in our employees' locations is " + content));
+
+        // use reflection extract info about fields, constructors, methods (modifiers, return types, parameters)
+        Class classToPrint = qaAndTesting.getClass();
+
+        LOGGER.info(formatHeader2("Class Fields"));
+        for (Field field : classToPrint.getDeclaredFields()) {
+            LOGGER.info("Field:\t\t\t" + field.getName());
+            LOGGER.info("Modifier:\t\t" + (Modifier.toString(field.getModifiers())));
+            LOGGER.info("Type:\t\t\t" + field.getType());
+            LOGGER.info("---");
+        }
+
+        LOGGER.info(formatHeader2("Class Constructors"));
+        for (Constructor constructor : classToPrint.getConstructors()) {
+            LOGGER.info("Constructor:\t" + constructor.getName());
+            LOGGER.info("Modifier:\t\t" + (Modifier.toString(constructor.getModifiers())));
+            List<Type> parameterTypes = Arrays.stream(constructor.getParameterTypes()).collect(Collectors.toList());
+            LOGGER.info(parameterTypes.size() + " Parameters:\t" + parameterTypes);
+            LOGGER.info("---");
+        }
+
+        LOGGER.info(formatHeader2("Class Methods"));
+        for (Method method : classToPrint.getDeclaredMethods()) {
+            LOGGER.info("Method:\t\t\t" + method.getName());
+            LOGGER.info("Modifier:\t\t" + (Modifier.toString(method.getModifiers())));
+            LOGGER.info("Return type:\t" + method.getReturnType());
+            List<Type> parameterTypes = Arrays.stream(method.getParameterTypes()).collect(Collectors.toList());
+            LOGGER.info(parameterTypes.size() + " Parameters:\t" + parameterTypes);
+            LOGGER.info("---");
+        }
+
+        // using only reflection: create object and call method
+        try {
+            Class<?> reflectedClass = Class.forName(classToPrint.getName());
+            Constructor<?> constructor = reflectedClass.getConstructor();
+            Object newObject = constructor.newInstance();
+            Method reflectedMethod = reflectedClass.getMethod("getName");
+
+            LOGGER.info("\n" + newObject);
+            LOGGER.info("\n" + reflectedMethod.invoke(newObject));
+
+        } catch (Exception e) {
+            LOGGER.error(e);
+        }
     }
 }

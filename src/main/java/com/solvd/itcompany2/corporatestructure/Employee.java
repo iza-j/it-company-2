@@ -143,9 +143,7 @@ public final class Employee implements PayableEntity, TaskOwner, Stakeholder, Sp
                 .append(ansiColor(cyanFG))
                 .append("Stakeholders:")
                 .append(ansiColor(reset)));
-        for (Stakeholder stakeholder : task.getStakeholders()) {
-            LOGGER.info(stakeholder.getName());
-        }
+        task.getStakeholders().forEach(stakeholder -> LOGGER.info(stakeholder.getName()));
         LOGGER.info(new StringBuilder()
                 .append(ansiColor(cyanFG))
                 .append("Finished by:\n")
@@ -154,14 +152,7 @@ public final class Employee implements PayableEntity, TaskOwner, Stakeholder, Sp
     }
 
     public boolean checkAffiliation(CorporateUnit corporateUnit) {
-        boolean affiliation = false;
-        for (Employee employee : corporateUnit.getAllEmployees()) {
-            if (this == employee) {
-                affiliation = true;
-                break;
-            }
-        }
-        return affiliation;
+        return corporateUnit.getAllEmployees().stream().anyMatch(employee -> employee.equals(this));
     }
 
     @Override

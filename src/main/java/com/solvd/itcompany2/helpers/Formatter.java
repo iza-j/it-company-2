@@ -11,6 +11,7 @@ public abstract class Formatter {
 
     public static final String blackBG =    "40";
     public static final String purpleBG =   "45";
+    public static final String whiteBG =    "47";
 
     public static String ansiColor(String code) { // static method: you don't have to instantiate any objects in order to use it
         return new StringBuilder()
@@ -59,6 +60,17 @@ public abstract class Formatter {
                 .append(" --- ")
                 .append(ansiColor(reset))
                 .append("\n")
+                .toString();
+    }
+
+    public static String formatHeader2(String text) {
+        return new StringBuilder()
+                .append("\n")
+                .append(ansiColor(blackFG, whiteBG, bold))
+                .append(" ")
+                .append(text)
+                .append(" ")
+                .append(ansiColor(reset))
                 .toString();
     }
 }

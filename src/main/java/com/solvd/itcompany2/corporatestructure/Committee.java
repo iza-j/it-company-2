@@ -18,9 +18,7 @@ public class Committee extends Team {
     @Override
     public void printDescription() {
         if ((this.name != null) && (this.leader != null) && (this.employees != null)) {
-            StringBuilder msg = new StringBuilder();
-
-            msg
+            StringBuilder msg = new StringBuilder()
                     .append(this.leader.getName())
                     .append(" is the head of ")
                     .append(this.getName())

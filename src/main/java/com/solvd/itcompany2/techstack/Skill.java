@@ -26,16 +26,10 @@ public class Skill {
                 .append(tool.getName())
                 .append(":"));
 
-        for (Employee employee : this.getEmployees()) {
-            boolean access = false;
-            for (Employee toolUser : tool.getEmployees()) {
-                if (employee.equals(toolUser)) {
-                    access = true;
-                    break;
-                }
-            }
+        for (Employee skilledEmployee : this.getEmployees()) {
+            boolean access = tool.getEmployees().stream().anyMatch(toolUser -> skilledEmployee.equals(toolUser));
             if (!access) {
-                LOGGER.info(employee.getName());
+                LOGGER.info(skilledEmployee.getName());
             }
         }
     }

@@ -27,9 +27,7 @@ public class Department implements CorporateUnit {
         }
 
         if (this.getTeams() != null) { // if any teams exist in the department
-            for (Team team : this.getTeams()) {
-                departmentEmployees.addAll(team.getAllEmployees());
-            }
+            this.getTeams().forEach(team -> departmentEmployees.addAll(team.getAllEmployees()));
         }
 
         return departmentEmployees;

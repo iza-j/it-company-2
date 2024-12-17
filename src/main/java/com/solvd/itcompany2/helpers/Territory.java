@@ -31,6 +31,12 @@ public enum Territory {
                 .format(DateTimeFormatter.ofPattern("HH:mm, MMMM d"));
     }
 
+    public String getTimeHour() {
+        return LocalDateTime
+                .now(ZoneId.of(this.getTimeZone()))
+                .format(DateTimeFormatter.ofPattern("HH:mm"));
+    }
+
     public String getTimeZone() {
         return timeZone;
     }

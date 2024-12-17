@@ -67,10 +67,7 @@ public class Team implements CorporateUnit, TaskOwner, Stakeholder, SpaceRequest
 
     public void printDescription() {
         if ((this.name != null) && (this.leader != null) && (this.employees != null)) {
-            StringBuilder msg = new StringBuilder();
-
-            msg
-                    .append(this.leader.getName())
+            StringBuilder msg = new StringBuilder().append(this.leader.getName())
                     .append(" is in charge of ")
                     .append(this.getName())
                     .append(". ");
@@ -128,9 +125,7 @@ public class Team implements CorporateUnit, TaskOwner, Stakeholder, SpaceRequest
                 .append(ansiColor(cyanFG))
                 .append("Stakeholders:")
                 .append(ansiColor(reset)));
-        for (Stakeholder stakeholder : task.getStakeholders()) {
-            LOGGER.info(stakeholder.getName());
-        }
+        task.getStakeholders().forEach(stakeholder -> LOGGER.info(stakeholder.getName()));
         LOGGER.info(new StringBuilder()
                 .append(ansiColor(cyanFG))
                 .append("Finished by:\n")

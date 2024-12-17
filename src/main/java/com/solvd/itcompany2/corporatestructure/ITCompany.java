@@ -18,9 +18,7 @@ public class ITCompany implements CorporateUnit {
         }
 
         if (this.getDepartments() != null) { // if any departments exist in the company
-            for (Department department : this.getDepartments()) {
-                companyEmployees.addAll(department.getAllEmployees());
-            }
+            this.getDepartments().forEach(department -> companyEmployees.addAll(department.getAllEmployees()));
         }
 
         return companyEmployees;

@@ -15,14 +15,7 @@ public class Tool {
     }
 
     public boolean checkAccess(Employee employee) {
-        boolean access = false;
-        for (Employee employeeWithAccess : this.employees) {
-            if (employee.equals(employeeWithAccess)) {
-                access = true;
-                break;
-            }
-        }
-        return access;
+        return this.getEmployees().stream().anyMatch(employeeWithAccess -> employee.equals(employeeWithAccess));
     }
 
     public String getName() {
