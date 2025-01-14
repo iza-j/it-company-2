@@ -3,6 +3,8 @@ package com.solvd.itcompany2;
 import com.solvd.itcompany2.corporatestructure.*;
 import com.solvd.itcompany2.exceptions.*;
 import com.solvd.itcompany2.helpers.Territory;
+import com.solvd.itcompany2.helpers.ThreadExtension;
+import com.solvd.itcompany2.helpers.ThreadRunnable;
 import com.solvd.itcompany2.outsideentities.Client;
 import com.solvd.itcompany2.outsideentities.InternetServiceProvider;
 import com.solvd.itcompany2.outsideentities.Provider;
@@ -20,6 +22,9 @@ import java.io.FileOutputStream;
 import java.lang.reflect.*;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -391,7 +396,7 @@ public class Main {
                 .sorted().findFirst();
         earliest.ifPresent(content -> LOGGER.info("Right now, the earliest hour in our employees' locations is " + content));
 
-        // use reflection extract info about fields, constructors, methods (modifiers, return types, parameters)
+        // use reflection to extract info about fields, constructors, methods (modifiers, return types, parameters)
         Class classToPrint = qaAndTesting.getClass();
 
         LOGGER.info(formatHeader2("Class Fields"));
@@ -434,5 +439,38 @@ public class Main {
         } catch (Exception e) {
             LOGGER.error(e);
         }
+
+        // Homework #11
+        LOGGER.info(formatHeader("Homework #11"));
+
+        LOGGER.info("Active threads: " + Thread.activeCount() + "\n");
+
+        // create a thread using Runnable
+        ThreadRunnable thread = new ThreadRunnable(1);
+        Thread threadCounter = new Thread(thread);
+        threadCounter.start();
+
+        // create threads using Thread. use ThreadPool
+        ExecutorService executor = Executors.newFixedThreadPool(5);
+        for (int i = 1; i <= 7; i++) {
+            executor.submit(new ThreadExtension(i));
+        }
+        executor.shutdown();
+
+        // use CompletableFuture
+        CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> {
+            // just pretend that some operations are taking place here
+            try {
+                Thread.sleep(6500);
+            } catch (Exception e) {
+                LOGGER.warn(e);
+            }
+
+            return "42";
+        });
+
+        String result = future.join();
+        LOGGER.info("\nSo guess when this line gets logged?"); // future.join() blocks the thread until the future's completed
+        LOGGER.info("\n*beep boop*\nThe Answer to the Ultimate Question of Life, the Universe, and Everything:\n.\n.\n.\n" + result);
     }
 }
